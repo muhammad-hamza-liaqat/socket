@@ -677,7 +677,7 @@
       let currentRoom = null;
       let selectedFile = null;
       let typingTimeout = null;
-      let typingUsers = new Map(); // Track who is typing
+      let typingUsers = new Map();
       let isTyping = false;
 
       function updateButtonsState() {
@@ -687,7 +687,6 @@
 
         joinBtn.disabled = !enabled;
         leaveBtn.disabled = !enabled;
-        // Send should also require a selected room + name, but message text is validated on submit
         form.querySelector("button[type='submit']").disabled = !enabled;
       }
 

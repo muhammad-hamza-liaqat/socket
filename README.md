@@ -18,6 +18,7 @@ A modular Node.js application with Socket.io integration for real-time, room-bas
 - **Socket.io** - Real-time bidirectional communication
 - **EJS** - Template engine for admin interface
 - **dotenv** - Environment variable management
+- **Multer** - For Handling the media files and storing them on server (optional)
 
 ## Installation
 
@@ -170,7 +171,7 @@ socket.on("chat:message", (msg) => {
   console.log(msg);
   // {
   //   message: "Hello, world!",
-  //   user: "John Doe",
+  //   user: "Muhammad Hamza",
   //   timestamp: 1234567890
   // }
 });
@@ -184,6 +185,7 @@ socket.on("chat:message", (msg) => {
 ---
 
 ## Frontend Integration
+- in any javascript library or framework
 
 ### Installation
 
@@ -219,15 +221,12 @@ function ChatRoom({ roomId, userName }) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    // Join room on mount
     socket.emit("chat:join", roomId);
 
-    // Listen for messages
     socket.on("chat:message", (msg) => {
       setMessages((prev) => [...prev, msg]);
     });
 
-    // Cleanup on unmount
     return () => {
       socket.emit("chat:leave", { roomId });
       socket.off("chat:message");
@@ -261,11 +260,9 @@ function ChatRoom({ roomId, userName }) {
 const socket = io("http://localhost:3000", { transports: ["websocket"] });
 
 socket.on("connect", () => {
-  // Join a room
   socket.emit("chat:join", "room1");
 });
 
-// Listen for messages
 socket.on("chat:message", (msg) => {
   console.log(`[${msg.user}]: ${msg.message}`);
 });
@@ -334,7 +331,7 @@ const registerNotificationHandlers = require("./notifications");
 
 io.on("connection", (socket) => {
   registerChatHandlers(io, socket);
-  registerNotificationHandlers(io, socket); // Add here
+  registerNotificationHandlers(io, socket);
 });
 ```
 
@@ -372,6 +369,7 @@ Renders the admin interface for testing Socket.io functionality.
 - typing feature like the whatsapp
 - leave room functionality
 
+### Preview
 
 ![alt text](image.png)
 
@@ -389,6 +387,11 @@ ISC
 ## Author
 
 muhammad-hamza-liaqat
+github: https://github.com/muhammad-hamza-liaqat
+
+## Contact
+
+mh408800@gmail.com
 
 ---
 
