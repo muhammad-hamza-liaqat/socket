@@ -34,7 +34,7 @@ function registerChatHandlers(io, socket) {
     socket.emit("chat:message", info);
   });
 
-  socket.on("chat:message", ({ roomId, message, user }) => {
+  socket.on("chat:message", ({ roomId, message, user, file }) => {
     if (!roomId || !joinedRooms.has(roomId)) {
       const warning = {
         message: "You must join the room before sending messages.",
@@ -46,12 +46,25 @@ function registerChatHandlers(io, socket) {
     }
 
     const payload = {
-      message,
+      message: message || null,
       user,
       timestamp: Date.now(),
+      file: file || null,
     };
 
     io.to(roomId).emit("chat:message", payload);
+  });
+
+  socket.on("chat:typing", ({ roomId, user, isTyping }) => {
+    if (!roomId || !joinedRooms.has(roomId)) {
+      return;
+    }
+
+    socket.to(roomId).emit("chat:typing", {
+      user,
+      isTyping,
+      timestamp: Date.now(),
+    });
   });
 }
 

@@ -84,6 +84,9 @@ prisma/dev.db-journal
 tmp/
 temp/
 
+# Uploaded files
+uploads/
+
 
 # VS Code
 .vscode/*
