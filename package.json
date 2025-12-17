@@ -1,0 +1,26 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "muhammad-hamza-liaqat"
+  ],
+  "license": "ISC",
+  "author": "muhammad-hamza-liaqat",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "ejs": "^3.1.10",
+    "express": "^5.2.1",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

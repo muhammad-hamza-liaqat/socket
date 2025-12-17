@@ -1,0 +1,512 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title><%= title %></title>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <style>
+      :root {
+        --bg: #020617;
+        --bg-elevated: #020617;
+        --bg-soft: #020617;
+        --border-subtle: #1e293b;
+        --border-strong: #0f172a;
+        --accent: #22c55e;
+        --accent-soft: rgba(34, 197, 94, 0.08);
+        --accent-strong: #16a34a;
+        --accent-secondary: #38bdf8;
+        --text-main: #e5e7eb;
+        --text-muted: #9ca3af;
+        --danger: #fb7185;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: radial-gradient(circle at top, #1e293b 0, #020617 55%);
+        color: var(--text-main);
+      }
+
+      header {
+        padding: 1.25rem 1.75rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        backdrop-filter: blur(18px);
+        background: linear-gradient(
+          135deg,
+          rgba(15, 23, 42, 0.94),
+          rgba(15, 23, 42, 0.8)
+        );
+        border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.65);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      .header-left h1 {
+        margin: 0 0 0.15rem;
+        font-size: 1.4rem;
+        letter-spacing: 0.03em;
+      }
+
+      .header-left p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.75rem;
+        padding: 0.3rem 0.65rem;
+        border-radius: 999px;
+        background: rgba(56, 189, 248, 0.16);
+        color: #7dd3fc;
+        border: 1px solid rgba(56, 189, 248, 0.4);
+      }
+
+      .badge-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+      }
+
+      main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1.75rem;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 780px;
+        background: radial-gradient(circle at top left, #020617 0, #020617 55%);
+        border-radius: 1.25rem;
+        border: 1px solid rgba(15, 23, 42, 0.95);
+        box-shadow: 0 26px 60px rgba(15, 23, 42, 0.9);
+        padding: 1.6rem 1.8rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at top right,
+          rgba(56, 189, 248, 0.12),
+          transparent 55%
+        );
+        opacity: 0.8;
+        pointer-events: none;
+      }
+
+      .card-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: 0.015em;
+        margin: 0 0 0.35rem;
+      }
+
+      .subtitle {
+        margin: 0;
+        font-size: 0.86rem;
+        color: var(--text-muted);
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.7rem;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.9);
+        border: 1px solid rgba(30, 64, 175, 0.6);
+        font-size: 0.75rem;
+        color: #bfdbfe;
+      }
+
+      .pill span {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #22c55e;
+      }
+
+      .top-controls {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr) auto auto;
+        gap: 0.6rem;
+        align-items: center;
+        margin-bottom: 0.95rem;
+      }
+
+      .field-label {
+        display: block;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.11em;
+        color: var(--text-muted);
+        margin-bottom: 0.3rem;
+      }
+
+      .field-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      input[type="text"] {
+        padding: 0.6rem 0.75rem;
+        border-radius: 0.55rem;
+        border: 1px solid var(--border-subtle);
+        background: radial-gradient(
+          circle at top left,
+          rgba(15, 23, 42, 0.95),
+          #020617
+        );
+        color: var(--text-main);
+        font-size: 0.86rem;
+      }
+
+      input[type="text"]::placeholder {
+        color: rgba(148, 163, 184, 0.7);
+      }
+
+      input[type="text"]:focus {
+        outline: none;
+        border-color: rgba(56, 189, 248, 0.85);
+        box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.7);
+      }
+
+      .btn {
+        padding: 0.6rem 0.95rem;
+        border-radius: 0.75rem;
+        border: 1px solid transparent;
+        background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+        color: #02100a;
+        font-weight: 600;
+        font-size: 0.86rem;
+        cursor: pointer;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.3rem;
+        box-shadow: 0 14px 30px rgba(34, 197, 94, 0.35);
+      }
+
+      .btn:hover:not(:disabled) {
+        background: linear-gradient(
+          135deg,
+          #4ade80,
+          var(--accent-strong)
+        );
+        transform: translateY(-0.5px);
+      }
+
+      .btn.secondary {
+        background: radial-gradient(circle at top, #020617, #020617);
+        border-color: rgba(75, 85, 99, 0.9);
+        color: var(--text-main);
+        box-shadow: none;
+      }
+
+      .btn.secondary:hover:not(:disabled) {
+        border-color: rgba(148, 163, 184, 0.9);
+        background: radial-gradient(circle at top, #020617, #020617);
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      #log {
+        height: 260px;
+        overflow-y: auto;
+        background: radial-gradient(
+          circle at top left,
+          rgba(15, 23, 42, 0.9),
+          #020617
+        );
+        border-radius: 0.9rem;
+        border: 1px solid var(--border-strong);
+        padding: 0.8rem 0.95rem;
+        font-size: 0.84rem;
+        margin-bottom: 0.85rem;
+      }
+
+      .log-line {
+        margin-bottom: 0.32rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .log-line.system {
+        color: var(--accent);
+      }
+
+      .log-line.error {
+        color: var(--danger);
+      }
+
+      .log-line.message {
+        color: var(--text-main);
+      }
+
+      form {
+        display: flex;
+        gap: 0.65rem;
+        margin-top: 0.6rem;
+      }
+
+      #message {
+        flex: 1;
+      }
+
+      .message-input-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .message-hint {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+
+      @media (max-width: 768px) {
+        main {
+          padding: 1.1rem;
+        }
+
+        .card {
+          padding: 1.25rem 1.2rem 1.2rem;
+        }
+
+        .top-controls {
+          grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.5fr);
+          grid-auto-rows: auto;
+        }
+
+        .top-controls > .field-wrapper:nth-child(1),
+        .top-controls > .field-wrapper:nth-child(2) {
+          grid-column: span 2;
+        }
+
+        .top-controls > .btn {
+          width: 100%;
+        }
+
+        form {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-left">
+        <h1>Real‑time Messaging</h1>
+        <p>Room-based messaging interface powered by the backend Socket.io layer.</p>
+      </div>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Realtime connection
+      </div>
+    </header>
+    <main>
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div>
+              <h2 class="title"><%= title %></h2>
+              <p class="subtitle">
+                Use this panel to verify and debug the real‑time messaging
+                behaviour of your application. Join a room, send messages and
+                observe the events handled by the server.
+              </p>
+            </div>
+            <div class="pill">
+              <span></span>
+              Room messaging
+            </div>
+          </div>
+
+          <div class="top-controls">
+            <div class="field-wrapper">
+              <label for="room" class="field-label">Room</label>
+              <input
+                type="text"
+                id="room"
+                placeholder="e.g. room1"
+                value="room1"
+              />
+            </div>
+
+            <div class="field-wrapper">
+              <label for="user" class="field-label">Your name</label>
+              <input
+                type="text"
+                id="user"
+                placeholder="Enter a display name"
+              />
+            </div>
+
+            <button id="joinBtn" type="button" class="btn">
+              Join room
+            </button>
+            <button id="leaveBtn" type="button" class="btn secondary">
+              Leave room
+            </button>
+          </div>
+
+          <div id="log"></div>
+
+          <form id="messageForm">
+            <div class="message-input-wrapper">
+              <input
+                type="text"
+                id="message"
+                autocomplete="off"
+                placeholder="Type a message and press Enter"
+              />
+              <span class="message-hint">
+                Messages are only sent to the room you’ve joined.
+              </span>
+            </div>
+            <button type="submit" class="btn">Send</button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const logEl = document.getElementById("log");
+      const roomInput = document.getElementById("room");
+      const userInput = document.getElementById("user");
+      const messageInput = document.getElementById("message");
+      const joinBtn = document.getElementById("joinBtn");
+      const leaveBtn = document.getElementById("leaveBtn");
+      const form = document.getElementById("messageForm");
+
+      let currentRoom = null;
+
+      function updateButtonsState() {
+        const hasRoom = roomInput.value.trim().length > 0;
+        const hasUser = userInput.value.trim().length > 0;
+        const enabled = hasRoom && hasUser;
+
+        joinBtn.disabled = !enabled;
+        leaveBtn.disabled = !enabled;
+        // Send should also require a selected room + name, but message text is validated on submit
+        form.querySelector("button[type='submit']").disabled = !enabled;
+      }
+
+      function addLog(text, type = "message") {
+        const line = document.createElement("div");
+        line.className = "log-line " + type;
+        line.textContent = text;
+        logEl.appendChild(line);
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      const socket = io(window.location.origin, {
+        transports: ["websocket"],
+      });
+
+      socket.on("connect", () => {
+        // If you ever need to debug, you can uncomment the next line
+        // addLog("Connected: " + socket.id, "system");
+        console.log("Connected:", socket.id);
+      });
+
+      socket.on("chat:message", (msg) => {
+        addLog(
+          `[${new Date(msg.timestamp).toLocaleTimeString()}] ${
+            msg.user
+          }: ${msg.message}`,
+          "message"
+        );
+        console.log("Chat message:", msg);
+      });
+
+      socket.on("disconnect", () => {
+        addLog("Disconnected", "error");
+        console.log("Disconnected");
+      });
+
+      joinBtn.addEventListener("click", () => {
+        const roomId = roomInput.value.trim();
+        if (!roomId) return;
+        socket.emit("chat:join", roomId);
+        currentRoom = roomId;
+        addLog("Joined room: " + roomId, "system");
+      });
+
+      leaveBtn.addEventListener("click", () => {
+        if (!currentRoom) {
+          addLog("You are not in any room.", "system");
+          return;
+        }
+
+        socket.emit("chat:leave", { roomId: currentRoom });
+        addLog("Left room: " + currentRoom, "system");
+        currentRoom = null;
+      });
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const roomId = currentRoom || roomInput.value.trim();
+        const user = userInput.value.trim() || "Anonymous";
+        const message = messageInput.value.trim();
+        if (!roomId || !message) return;
+
+        socket.emit("chat:message", { roomId, message, user });
+        messageInput.value = "";
+      });
+
+      // Reactively enable/disable buttons when user types
+      roomInput.addEventListener("input", updateButtonsState);
+      userInput.addEventListener("input", updateButtonsState);
+
+      // Initial state: buttons disabled until both fields filled
+      updateButtonsState();
+    </script>
+  </body>
+</html>
+
+

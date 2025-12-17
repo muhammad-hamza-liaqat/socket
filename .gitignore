@@ -1,0 +1,137 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+jspm_packages/
+bower_components/
+
+# Build outputs
+dist/
+build/
+out/
+.tmp/
+.cache/
+.esbuild/
+.turbo/
+.next/
+.nuxt/
+.svelte-kit/
+.vite/
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# REPL history
+.node_repl_history
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Optional bundler cache
+.parcel-cache/
+
+# Optional yarn cache
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+.yarn-integrity
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+.jest/
+.mocha/
+
+# Serverless
+.serverless/
+
+# Firebase
+.firebase/
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+
+# Temporary files
+tmp/
+temp/
+
+
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# JetBrains
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon files
+Icon?
+._*
+
+# Thumbnails
+._DS_Store
+
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes
+.fseventsd
+
+# AFP network share folders
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
