@@ -365,6 +365,16 @@ Renders the admin interface for testing Socket.io functionality.
 - Keep socket handlers separated by feature
 - Use descriptive variable and function names
 
+### Features
+- Join Room
+- embedded name on the top of the message
+- can share the media files as well like images or pdf(s) etc
+- typing feature like the whatsapp
+- leave room functionality
+
+
+![alt text](image.png)
+
 ### Project Conventions
 
 - Socket event names use colon notation: `feature:action` (e.g., `chat:join`)

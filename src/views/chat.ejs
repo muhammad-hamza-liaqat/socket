@@ -266,24 +266,268 @@
         padding: 0.8rem 0.95rem;
         font-size: 0.84rem;
         margin-bottom: 0.85rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
       }
 
       .log-line {
-        margin-bottom: 0.32rem;
+        margin-bottom: 0;
         white-space: pre-wrap;
         word-break: break-word;
       }
 
       .log-line.system {
         color: var(--accent);
+        text-align: center;
+        font-size: 0.75rem;
+        padding: 0.3rem 0;
       }
 
       .log-line.error {
         color: var(--danger);
+        text-align: center;
+        font-size: 0.75rem;
+        padding: 0.3rem 0;
       }
 
-      .log-line.message {
+      .message-bubble {
+        display: flex;
+        flex-direction: column;
+        max-width: 70%;
+        margin-bottom: 0.5rem;
+        animation: fadeIn 0.2s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message-bubble.own {
+        align-self: flex-end;
+        align-items: flex-end;
+      }
+
+      .message-bubble.other {
+        align-self: flex-start;
+        align-items: flex-start;
+      }
+
+      .message-header {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-bottom: 0.25rem;
+        padding: 0 0.5rem;
+        font-weight: 500;
+      }
+
+      .message-bubble.own .message-header {
+        text-align: right;
+      }
+
+      .message-bubble.other .message-header {
+        text-align: left;
+      }
+
+      .message-content {
+        padding: 0.6rem 0.85rem;
+        border-radius: 1rem;
+        word-wrap: break-word;
+        font-size: 0.85rem;
+        line-height: 1.4;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .message-bubble.own .message-content {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: #02100a;
+        border-bottom-right-radius: 0.25rem;
+      }
+
+      .message-bubble.other .message-content {
+        background: rgba(30, 41, 59, 0.8);
         color: var(--text-main);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-bottom-left-radius: 0.25rem;
+      }
+
+      .message-time {
+        font-size: 0.65rem;
+        color: var(--text-muted);
+        margin-top: 0.2rem;
+        padding: 0 0.5rem;
+      }
+
+      .message-bubble.own .message-time {
+        text-align: right;
+      }
+
+      .message-bubble.other .message-time {
+        text-align: left;
+      }
+
+      .typing-indicator {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        margin-bottom: 0.5rem;
+        max-width: 70%;
+        align-self: flex-start;
+        animation: fadeIn 0.2s ease-in;
+      }
+
+      .typing-indicator-header {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      .typing-dots {
+        display: flex;
+        gap: 0.3rem;
+        padding: 0.6rem 0.85rem;
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 1rem;
+        border-bottom-left-radius: 0.25rem;
+      }
+
+      .typing-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--text-muted);
+        animation: typingDot 1.4s infinite ease-in-out;
+      }
+
+      .typing-dot:nth-child(1) {
+        animation-delay: 0s;
+      }
+
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes typingDot {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.5;
+        }
+        30% {
+          transform: translateY(-8px);
+          opacity: 1;
+        }
+      }
+
+      .message-file {
+        margin-top: 0.5rem;
+        border-radius: 0.5rem;
+        overflow: hidden;
+      }
+
+      .message-file img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 0.5rem;
+      }
+
+      .message-file-pdf {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 0.5rem;
+        text-decoration: none;
+        color: inherit;
+        transition: background 0.2s;
+      }
+
+      .message-bubble.own .message-file-pdf {
+        background: rgba(0, 0, 0, 0.15);
+      }
+
+      .message-bubble.other .message-file-pdf {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .message-file-pdf:hover {
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      .file-icon {
+        font-size: 1.5rem;
+      }
+
+      .file-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .file-name {
+        font-weight: 500;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .file-size {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 0.2rem;
+      }
+
+      .file-input-wrapper {
+        position: relative;
+      }
+
+      .file-input-label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.6rem 0.95rem;
+        border-radius: 0.75rem;
+        border: 1px solid rgba(75, 85, 99, 0.9);
+        background: radial-gradient(circle at top, #020617, #020617);
+        color: var(--text-main);
+        cursor: pointer;
+        font-size: 0.86rem;
+        transition: all 0.2s;
+      }
+
+      .file-input-label:hover {
+        border-color: rgba(148, 163, 184, 0.9);
+        background: rgba(15, 23, 42, 0.5);
+      }
+
+      .file-input-label:active {
+        transform: scale(0.98);
+      }
+
+      #fileInput {
+        display: none;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 0.65rem;
+        align-items: flex-end;
       }
 
       form {
@@ -341,7 +585,7 @@
     <header>
       <div class="header-left">
         <h1>Real‑time Messaging</h1>
-        <p>Room-based messaging interface powered by the backend Socket.io layer.</p>
+        <p>Room-based messaging interface</p>
       </div>
       <div class="badge">
         <span class="badge-dot"></span>
@@ -352,14 +596,14 @@
       <div class="card">
         <div class="card-inner">
           <div class="card-header">
-            <div>
+            <!-- <div>
               <h2 class="title"><%= title %></h2>
               <p class="subtitle">
                 Use this panel to verify and debug the real‑time messaging
                 behaviour of your application. Join a room, send messages and
                 observe the events handled by the server.
               </p>
-            </div>
+            </div> -->
             <div class="pill">
               <span></span>
               Room messaging
@@ -405,10 +649,16 @@
                 placeholder="Type a message and press Enter"
               />
               <span class="message-hint">
-                Messages are only sent to the room you’ve joined.
+                Messages are only sent to the room you've joined.
               </span>
             </div>
-            <button type="submit" class="btn">Send</button>
+            <div class="form-actions">
+              <label for="fileInput" class="file-input-label" title="Upload image or PDF">
+                📎
+              </label>
+              <input type="file" id="fileInput" accept="image/*,.pdf" />
+              <button type="submit" class="btn">Send</button>
+            </div>
           </form>
         </div>
       </div>
@@ -419,11 +669,16 @@
       const roomInput = document.getElementById("room");
       const userInput = document.getElementById("user");
       const messageInput = document.getElementById("message");
+      const fileInput = document.getElementById("fileInput");
       const joinBtn = document.getElementById("joinBtn");
       const leaveBtn = document.getElementById("leaveBtn");
       const form = document.getElementById("messageForm");
 
       let currentRoom = null;
+      let selectedFile = null;
+      let typingTimeout = null;
+      let typingUsers = new Map(); // Track who is typing
+      let isTyping = false;
 
       function updateButtonsState() {
         const hasRoom = roomInput.value.trim().length > 0;
@@ -444,28 +699,193 @@
         logEl.scrollTop = logEl.scrollHeight;
       }
 
+      function addMessage(msg) {
+        const currentUser = userInput.value.trim();
+        const isOwnMessage = msg.user === currentUser;
+        
+        const bubble = document.createElement("div");
+        bubble.className = `message-bubble ${isOwnMessage ? "own" : "other"}`;
+        
+        const header = document.createElement("div");
+        header.className = "message-header";
+        header.textContent = msg.user;
+        
+        const content = document.createElement("div");
+        content.className = "message-content";
+        
+        if (msg.message) {
+          const textDiv = document.createElement("div");
+          textDiv.textContent = msg.message;
+          content.appendChild(textDiv);
+        }
+        
+        if (msg.file) {
+          const fileDiv = document.createElement("div");
+          fileDiv.className = "message-file";
+          
+          if (msg.file.mimetype && msg.file.mimetype.startsWith("image/")) {
+            const img = document.createElement("img");
+            img.src = msg.file.url;
+            img.alt = msg.file.filename || "Image";
+            img.loading = "lazy";
+            fileDiv.appendChild(img);
+          } else if (msg.file.mimetype === "application/pdf") {
+            const pdfLink = document.createElement("a");
+            pdfLink.href = msg.file.url;
+            pdfLink.target = "_blank";
+            pdfLink.className = "message-file-pdf";
+            
+            const icon = document.createElement("span");
+            icon.className = "file-icon";
+            icon.textContent = "📄";
+            
+            const info = document.createElement("div");
+            info.className = "file-info";
+            
+            const name = document.createElement("div");
+            name.className = "file-name";
+            name.textContent = msg.file.filename || "Document.pdf";
+            
+            const size = document.createElement("div");
+            size.className = "file-size";
+            size.textContent = formatFileSize(msg.file.size);
+            
+            info.appendChild(name);
+            info.appendChild(size);
+            pdfLink.appendChild(icon);
+            pdfLink.appendChild(info);
+            fileDiv.appendChild(pdfLink);
+          }
+          
+          content.appendChild(fileDiv);
+        }
+        
+        const time = document.createElement("div");
+        time.className = "message-time";
+        time.textContent = new Date(msg.timestamp).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+        
+        bubble.appendChild(header);
+        bubble.appendChild(content);
+        bubble.appendChild(time);
+        
+        logEl.appendChild(bubble);
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      function formatFileSize(bytes) {
+        if (bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round(bytes / Math.pow(k, i) * 100) / 100 + " " + sizes[i];
+      }
+
+      function showTypingIndicator(user) {
+        const existingId = `typing-${user}`;
+        const existing = document.getElementById(existingId);
+        if (existing) {
+          existing.remove();
+        }
+
+        const indicator = document.createElement("div");
+        indicator.id = existingId;
+        indicator.className = "typing-indicator";
+
+        const header = document.createElement("div");
+        header.className = "typing-indicator-header";
+        header.textContent = user;
+
+        const dots = document.createElement("div");
+        dots.className = "typing-dots";
+        for (let i = 0; i < 3; i++) {
+          const dot = document.createElement("div");
+          dot.className = "typing-dot";
+          dots.appendChild(dot);
+        }
+
+        indicator.appendChild(header);
+        indicator.appendChild(dots);
+        logEl.appendChild(indicator);
+        logEl.scrollTop = logEl.scrollHeight;
+
+        typingUsers.set(user, Date.now());
+      }
+
+      function hideTypingIndicator(user) {
+        const indicator = document.getElementById(`typing-${user}`);
+        if (indicator) {
+          indicator.remove();
+        }
+        typingUsers.delete(user);
+      }
+
+      function updateTypingIndicators() {
+        const now = Date.now();
+        const timeout = 3000;
+
+        typingUsers.forEach((timestamp, user) => {
+          if (now - timestamp > timeout) {
+            hideTypingIndicator(user);
+          }
+        });
+      }
+
+      function handleTyping() {
+        if (!currentRoom) return;
+
+        const user = userInput.value.trim();
+        if (!user) return;
+
+        if (typingTimeout) {
+          clearTimeout(typingTimeout);
+        }
+
+        if (!isTyping) {
+          socket.emit("chat:typing", {
+            roomId: currentRoom,
+            user: user,
+            isTyping: true,
+          });
+          isTyping = true;
+        }
+
+        typingTimeout = setTimeout(() => {
+          socket.emit("chat:typing", {
+            roomId: currentRoom,
+            user: user,
+            isTyping: false,
+          });
+          isTyping = false;
+        }, 3000);
+      }
+
       const socket = io(window.location.origin, {
         transports: ["websocket"],
       });
 
       socket.on("connect", () => {
-        // If you ever need to debug, you can uncomment the next line
         // addLog("Connected: " + socket.id, "system");
         console.log("Connected:", socket.id);
       });
 
       socket.on("chat:message", (msg) => {
-        addLog(
-          `[${new Date(msg.timestamp).toLocaleTimeString()}] ${
-            msg.user
-          }: ${msg.message}`,
-          "message"
-        );
+        hideTypingIndicator(msg.user);
+        addMessage(msg);
         console.log("Chat message:", msg);
       });
 
+      socket.on("chat:typing", (data) => {
+        if (data.isTyping) {
+          showTypingIndicator(data.user);
+        } else {
+          hideTypingIndicator(data.user);
+        }
+      });
+
       socket.on("disconnect", () => {
-        addLog("Disconnected", "error");
         console.log("Disconnected");
       });
 
@@ -474,36 +894,114 @@
         if (!roomId) return;
         socket.emit("chat:join", roomId);
         currentRoom = roomId;
-        addLog("Joined room: " + roomId, "system");
       });
 
       leaveBtn.addEventListener("click", () => {
         if (!currentRoom) {
-          addLog("You are not in any room.", "system");
           return;
         }
 
+        if (typingTimeout) {
+          clearTimeout(typingTimeout);
+          typingTimeout = null;
+        }
+        if (isTyping) {
+          socket.emit("chat:typing", {
+            roomId: currentRoom,
+            user: userInput.value.trim(),
+            isTyping: false,
+          });
+          isTyping = false;
+        }
+
+        typingUsers.forEach((_, user) => {
+          hideTypingIndicator(user);
+        });
+        typingUsers.clear();
+
         socket.emit("chat:leave", { roomId: currentRoom });
-        addLog("Left room: " + currentRoom, "system");
         currentRoom = null;
       });
 
-      form.addEventListener("submit", (e) => {
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          selectedFile = file;
+          form.dispatchEvent(new Event("submit"));
+        }
+      });
+
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
         const roomId = currentRoom || roomInput.value.trim();
         const user = userInput.value.trim() || "Anonymous";
         const message = messageInput.value.trim();
-        if (!roomId || !message) return;
+        
+        if (!roomId) return;
+        if (!message && !selectedFile) return;
 
-        socket.emit("chat:message", { roomId, message, user });
+        if (typingTimeout) {
+          clearTimeout(typingTimeout);
+          typingTimeout = null;
+        }
+        if (isTyping) {
+          socket.emit("chat:typing", {
+            roomId,
+            user,
+            isTyping: false,
+          });
+          isTyping = false;
+        }
+
+        let fileData = null;
+
+        if (selectedFile) {
+          try {
+            const formData = new FormData();
+            formData.append("file", selectedFile);
+
+            const uploadResponse = await fetch("/api/upload", {
+              method: "POST",
+              body: formData,
+            });
+
+            if (!uploadResponse.ok) {
+              throw new Error("File upload failed");
+            }
+
+            fileData = await uploadResponse.json();
+          } catch (error) {
+            console.error("Error uploading file:", error);
+            alert("Failed to upload file. Please try again.");
+            selectedFile = null;
+            fileInput.value = "";
+            return;
+          }
+        }
+
+        socket.emit("chat:message", {
+          roomId,
+          message: message || null,
+          user,
+          file: fileData,
+        });
+
         messageInput.value = "";
+        selectedFile = null;
+        fileInput.value = "";
       });
 
-      // Reactively enable/disable buttons when user types
+      messageInput.addEventListener("input", () => {
+        if (currentRoom) {
+          handleTyping();
+        }
+      });
+
+      setInterval(updateTypingIndicators, 1000);
+
       roomInput.addEventListener("input", updateButtonsState);
       userInput.addEventListener("input", updateButtonsState);
 
-      // Initial state: buttons disabled until both fields filled
       updateButtonsState();
     </script>
   </body>
