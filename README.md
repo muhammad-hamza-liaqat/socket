@@ -372,6 +372,9 @@ Renders the admin interface for testing Socket.io functionality.
 - typing feature like the whatsapp
 - leave room functionality
 
+
+![alt text](image.png)
+
 ### Project Conventions
 
 - Socket event names use colon notation: `feature:action` (e.g., `chat:join`)
