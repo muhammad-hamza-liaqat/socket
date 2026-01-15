@@ -16,11 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
-app.get("/", (req, res) => {
+app.get("/health", (req, res) => {
   res.end("Server is up and running");
 });
 
-app.get("/chat", (req, res) => {
+app.get("/", (req, res) => {
   res.render("chat", { title: "Socket.io Chat Test" });
 });
 
